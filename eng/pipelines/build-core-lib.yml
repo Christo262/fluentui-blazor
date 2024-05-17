@@ -50,6 +50,10 @@ parameters:
     type: string
     default: '**/Microsoft.FluentUI.AspNetCore.Components.Tests.csproj'
 
+  - name: PublishPreview  # Publish to Preview NuGet feed
+    type: boolean
+    default: false
+
 variables:
   - template: /eng/pipelines/version.yml@self
 
@@ -239,3 +243,19 @@ extends:
             CleanTargetFolder: false
             OverWrite: true
             flattenFolders: true
+
+    - stage: publish
+      display: Publish Preview
+      jobs:
+      - job: Publish to Preview
+        steps:
+        - script: echo "Hello World"
+          displayName: 'Display Hello World'
+
+        - script: echo "Publish to Preview"
+          condition: eq(variables['PublishPreview'], true)
+          displayName: 'Publish to Preview'
+
+        # SourceFolder: '$(Build.SourcesDirectory)'
+        # Contents: '**/*$(PackageVersion).nupkg'
+        # TargetFolder: '$(Build.ArtifactStagingDirectory)'
